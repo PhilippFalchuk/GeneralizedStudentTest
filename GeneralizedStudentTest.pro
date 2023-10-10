@@ -22,3 +22,14 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/alglib/win/release/ -lalglib
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/alglib/win/debug/ -lalglib
+
+INCLUDEPATH += $$PWD/alglib/win/include
+DEPENDPATH += $$PWD/alglib/win/include
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/alglib/win/release/libalglib.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/alglib/win/debug/libalglib.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/alglib/win/release/alglib.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/alglib/win/debug/alglib.lib
